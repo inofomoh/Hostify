@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hostify - Realtime Hosting</title>
+</head>
+<body>
+  <h1>Hostify</h1>
+  <textarea id="html" placeholder="HTML code"></textarea><br>
+  <textarea id="css" placeholder="CSS code"></textarea><br>
+  <textarea id="js" placeholder="JS code"></textarea><br>
+  <input id="projectName" placeholder="Project name" />
+  <button onclick="generate()">Generate</button>
+  <button onclick="deploy()">Deploy</button>
+  <script>
+    async function generate() {
+      const res = await fetch('/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: document.getElementById('projectName').value,
+          html: document.getElementById('html').value,
+          css: document.getElementById('css').value,
+          js: document.getElementById('js').value
+        })
+      });
+      const data = await res.json();
+      alert('Project saved: ' + data.project);
+    }
+    async function deploy() {
+      const res = await fetch('/deploy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          project: document.getElementById('projectName').value
+        })
+      });
+      const data = await res.json();
+      alert(JSON.stringify(data));
+    }
+  </script>
+</body>
+</html>
